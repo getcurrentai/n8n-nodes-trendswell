@@ -1,2 +1,21 @@
+# Exclude source TypeScript files
+nodes/
+credentials/
+
+# Exclude configs
+tsconfig.json
+tsconfig.tsbuildinfo
+
+# Exclude lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Exclude build and dev stuff
+node_modules/
+npm-debug.log
 .DS_Store
-*.tsbuildinfo
+
+# Exclude Git
+.git/
+.gitignore

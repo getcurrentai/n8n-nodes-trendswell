@@ -1,18 +1,32 @@
 {
 	"name": "n8n-nodes-trendswell",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"description": "n8n nodes for Trendswell (API key auth, one action, one trigger)",
 	"author": "Junaid Khokhar",
 	"license": "MIT",
 	"keywords": [
-		"n8n-community-node-package"
+		"n8n",
+		"n8n-node",
+		"n8n-community-node-package",
+		"trendswell",
+		"workflow-automation"
 	],
 	"files": [
 		"dist",
 		"credentials",
 		"nodes",
-		"icons"
+		"icons",
+		"README.md",
+		"LICENSE.md"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/getcurrentai/n8n-nodes-trendswell.git"
+	},
+	"homepage": "https://github.com/getcurrentai/n8n-nodes-trendswell",
+	"bugs": {
+		"url": "https://github.com/getcurrentai/n8n-nodes-trendswell/issues"
+	},
 	"n8n": {
 		"credentials": [
 			"dist/credentials/TrendswellApi.credentials.js"
@@ -26,12 +40,15 @@
 		"build": "tsc && npm run copy:icons",
 		"copy:icons": "copyfiles -u 2 nodes/**/icons/**/* dist/nodes/Trendswell",
 		"dev": "tsc -w",
+		"lint": "tsc --noEmit",
 		"prepublishOnly": "npm run build"
+	},
+	"dependencies": {
+		"n8n-workflow": "^1.82.0"
 	},
 	"devDependencies": {
 		"@types/node": "^24.5.2",
 		"copyfiles": "^2.4.1",
-		"n8n-workflow": "^1.82.0",
 		"typescript": "^5.9.2"
 	}
 }
