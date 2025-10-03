@@ -1,48 +1,75 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n-nodes-trendswell
 
-# n8n-nodes-starter
+Custom **n8n community nodes** for [Trendswell](https://app.trendswell.ai).
+This package provides:
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
+- **Credentials** for authenticating with the Trendswell API
+- **Trigger node** for receiving real-time events
+- **Action node** for interacting with Trendswell endpoints
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+---
 
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+## ✨ Features
 
-## Prerequisites
+- 🔑 API Key authentication (`auth-token` header)
+- 📡 **Trigger Node**: Reacts to Trendswell events via webhooks
+- ⚙️ **Action Node**: Perform operations with the Trendswell API
 
-You need the following installed on your development machine:
+---
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 20. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  npm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+## 📦 Installation
 
-## Using this starter
+### From npm (recommended)
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+```bash
+npm install n8n-nodes-trendswell
+```
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+### From source
 
-## More information
+Clone this repository into your n8n custom nodes directory:
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+```bash
+git clone https://github.com/<your-username>/n8n-nodes-trendswell.git
+cd n8n-nodes-trendswell
+npm install
+npm run build
+```
 
-## License
+Then add the built package to your n8n instance (using `dist`).
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+---
+
+## 🔑 Credentials
+
+You’ll need your **Trendswell API token**.
+When creating credentials in n8n, enter your API key, which will be injected as an `auth-token` header in every request.
+
+---
+
+## 🚀 Usage
+
+1. Add **Trendswell Trigger** node to your workflow.
+
+   - This will register a webhook URL with your Trendswell backend.
+   - When an event occurs, n8n will receive the payload.
+
+2. Add **Trendswell Action** node to perform API operations.
+
+---
+
+## 🖼️ Icons
+
+Icons are included and will display in the n8n editor UI.
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! Please open an issue before submitting major changes.
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) © 2025 Marchese company
