@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-trendswell",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "n8n nodes for Trendswell (API key auth, one action, one trigger)",
 	"author": "Junaid Khokhar",
 	"license": "MIT",
