@@ -4,6 +4,7 @@
 	"description": "n8n nodes for Trendswell (API key auth, one action, one trigger)",
 	"author": "Junaid Khokhar",
 	"license": "MIT",
+	"main": "dist/index.js",
 	"keywords": [
 		"n8n",
 		"n8n-node",
