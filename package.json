@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-trendswell",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"description": "n8n nodes for Trendswell (API key auth, one action, one trigger)",
 	"author": "Junaid Khokhar",
 	"license": "MIT",
@@ -14,9 +14,6 @@
 	],
 	"files": [
 		"dist",
-		"credentials",
-		"nodes",
-		"icons",
 		"README.md",
 		"LICENSE.md"
 	],
@@ -29,6 +26,7 @@
 		"url": "https://github.com/getcurrentai/n8n-nodes-trendswell/issues"
 	},
 	"n8n": {
+		"n8nNodesApiVersion": 1,
 		"credentials": [
 			"dist/credentials/TrendswellApi.credentials.js"
 		],
