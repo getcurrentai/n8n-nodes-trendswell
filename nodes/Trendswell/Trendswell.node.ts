@@ -11,7 +11,7 @@ export class Trendswell implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Trendswell',
 		name: 'trendswell',
-		icon: 'file:icons/trendswell.png',
+		icon: 'file:trendswell.svg',
 		group: ['transform'],
 		version: 1,
 		description: 'Custom node for Trendswell search',

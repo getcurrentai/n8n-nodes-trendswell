@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-trendswell",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"description": "n8n nodes for Trendswell (API key auth, one action, one trigger)",
 	"author": "Junaid Khokhar",
 	"license": "MIT",
@@ -37,7 +37,7 @@
 	},
 	"scripts": {
 		"build": "tsc && npm run copy:icons",
-		"copy:icons": "copyfiles -u 2 nodes/**/icons/**/* dist/nodes/Trendswell",
+		"copy:icons": "copyfiles nodes/Trendswell/trendswell.svg dist",
 		"dev": "tsc -w",
 		"lint": "tsc --noEmit",
 		"prepublishOnly": "npm run build"
@@ -48,5 +48,8 @@
 		"copyfiles": "^2.4.1",
 		"typescript": "^5.9.2",
 		"n8n-workflow": "^1.82.0"
+	},
+	"peerDependencies": {
+		"n8n-workflow": ">=1.0.0"
 	}
 }
