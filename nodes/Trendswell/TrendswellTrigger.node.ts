@@ -14,7 +14,7 @@ export class TrendswellTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Trendswell Trigger',
 		name: 'trendswellTrigger',
-		icon: 'file:trendswell.svg',
+		icon: 'file:icons/trendswell.png',
 		group: ['trigger'],
 		version: 1,
 		description: 'Starts workflow when a Trendswell event occurs',
@@ -77,7 +77,7 @@ export class TrendswellTrigger implements INodeType {
 					if (!authToken) return false;
 
 					// Try to GET the subscription - if returns 200 treat as exists
-					await this.helpers.request({
+					await this.helpers.httpRequest({
 						method: 'GET',
 						url: `${backendURL}/n8n/webhooks/${webhookId}`,
 						headers: {
@@ -112,7 +112,7 @@ export class TrendswellTrigger implements INodeType {
 					const webhookUrl = this.getNodeWebhookUrl('default');
 					const webhookFor = this.getNodeParameter('webhookFor') as string;
 
-					const response = await this.helpers.request({
+					const response = await this.helpers.httpRequest({
 						method: 'POST',
 						url: `${backendURL}/n8n/subscription-webhooks`,
 						headers: {
@@ -164,8 +164,8 @@ export class TrendswellTrigger implements INodeType {
 					};
 					const authToken = credentials?.authToken as string | undefined;
 
-					// perform delete request (your Zapier code uses DELETE /zap/webhooks/:id)
-					await this.helpers.request({
+					// perform delete request
+					await this.helpers.httpRequest({
 						method: 'DELETE',
 						url: `${backendURL}/n8n/webhooks/${webhookId}`,
 						headers: {
