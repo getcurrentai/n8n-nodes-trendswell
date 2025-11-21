@@ -14,7 +14,7 @@ export class TrendswellTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Trendswell Trigger',
 		name: 'trendswellTrigger',
-		icon: 'file:icons/trendswell.png',
+		icon: 'file:trendswell.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Starts workflow when a Trendswell event occurs',
