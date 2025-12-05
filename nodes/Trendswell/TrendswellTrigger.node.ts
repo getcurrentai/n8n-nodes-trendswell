@@ -8,6 +8,7 @@ import {
 	NodeConnectionType,
 	JsonObject,
 } from 'n8n-workflow';
+
 import { backendURL } from '../../credentials/TrendswellApi.credentials';
 
 export class TrendswellTrigger implements INodeType {
@@ -17,7 +18,7 @@ export class TrendswellTrigger implements INodeType {
 		icon: 'file:trendswell.svg',
 		group: ['trigger'],
 		version: 1,
-		description: 'Starts workflow when a Trendswell event occurs',
+		description: 'Starts the workflow when a Trendswell event occurs',
 		defaults: { name: 'Trendswell Trigger' },
 		inputs: [],
 		outputs: [NodeConnectionType.Main],
@@ -29,12 +30,13 @@ export class TrendswellTrigger implements INodeType {
 			},
 		],
 
+		// incoming webhook URL for n8n
 		webhooks: [
 			{
 				name: 'default',
 				httpMethod: 'POST',
 				responseMode: 'onReceived',
-				path: 'trendswell',
+				path: 'trendswell', // => /webhook/<id>/trendswell
 			},
 		],
 
@@ -43,40 +45,36 @@ export class TrendswellTrigger implements INodeType {
 				displayName: 'Webhook For',
 				name: 'webhookFor',
 				type: 'options',
-				noDataExpression: true,
-				options: [{ name: 'Trendswell Searches', value: 'trendswell-searches' }],
+				options: [
+					{ name: 'Trendswell Searches', value: 'trendswell-searches' },
+					// future event types here
+				],
 				default: 'trendswell-searches',
-				description: 'The type of event this webhook should listen for',
+				description: 'The type of event this webhook listens for',
 			},
 		],
 	};
 
-	// webhook lifecycle methods: checkExists, create, delete
+	/**
+	 * Webhook Lifecycle Methods
+	 */
 	webhookMethods = {
 		default: {
 			/**
-			 * checkExists - verifies if subscription already exists
-			 * This is optional but required by the INodeType typing (we include it).
+			 * 🔍 1. checkExists()
+			 * Called when workflow is activated.
+			 * n8n checks if the webhook is already registered in your backend.
 			 */
 			async checkExists(this: IHookFunctions): Promise<boolean> {
 				try {
-					// static data stored per node
 					const staticData = this.getWorkflowStaticData('node') as any;
 					const webhookId = staticData?.webhookId;
-					if (!webhookId) {
-						return false;
-					}
+					if (!webhookId) return false;
 
-					// Verify with remote API if possible
-					const credentials = (await this.getCredentials('trendswellApi')) as {
-						authToken?: string;
-					};
-					const authToken = credentials?.authToken as string | undefined;
+					const credentials = await this.getCredentials('trendswellApi');
+					const authToken = credentials.authToken as string;
 
-					// If there's no auth token, assume it doesn't exist
-					if (!authToken) return false;
-
-					// Try to GET the subscription - if returns 200 treat as exists
+					// Check if webhook still exists in your backend
 					await this.helpers.httpRequest({
 						method: 'GET',
 						url: `${backendURL}/n8n/webhooks/${webhookId}`,
@@ -89,13 +87,14 @@ export class TrendswellTrigger implements INodeType {
 
 					return true;
 				} catch (error) {
-					// If remote returns 404 or similar, treat as not exists
 					return false;
 				}
 			},
 
 			/**
-			 * create - called when workflow is activated
+			 * 🟢 2. create()
+			 * Called only when workflow is TURNED ON and webhook does NOT already exist.
+			 * Registers webhook in your backend.
 			 */
 			async create(this: IHookFunctions): Promise<boolean> {
 				try {
@@ -105,19 +104,20 @@ export class TrendswellTrigger implements INodeType {
 					if (!authToken) {
 						throw new NodeOperationError(
 							this.getNode(),
-							'No auth token available for Trendswell credentials',
+							'Auth token missing in Trendswell credentials',
 						);
 					}
 
+					// n8n webhook URL that backend should call
 					const webhookUrl = this.getNodeWebhookUrl('default');
 					const webhookFor = this.getNodeParameter('webhookFor') as string;
 
+					// Register webhook in your backend
 					const response = await this.helpers.httpRequest({
 						method: 'POST',
 						url: `${backendURL}/n8n/subscription-webhooks`,
 						headers: {
 							'Content-Type': 'application/json',
-							Accept: 'application/json',
 							'auth-token': authToken,
 						},
 						body: {
@@ -127,88 +127,78 @@ export class TrendswellTrigger implements INodeType {
 						json: true,
 					});
 
-					// ensure we received an id
 					if (!response?.id) {
-						throw new NodeOperationError(
-							this.getNode(),
-							'No subscription ID returned from Trendswell API',
-						);
+						throw new NodeOperationError(this.getNode(), 'No webhook ID returned from backend');
 					}
 
-					// persist subscription id in workflow static data (node-scoped)
+					// Store webhook ID in n8n workflow static data
 					const staticData = this.getWorkflowStaticData('node') as any;
 					staticData.webhookId = response.id;
 
 					return true;
 				} catch (error) {
-					// NodeApiError expects a JsonObject (not a plain Error)
-					throw new NodeApiError(this.getNode(), error as unknown as JsonObject);
+					throw new NodeApiError(this.getNode(), error as JsonObject);
 				}
 			},
 
 			/**
-			 * delete - called when workflow is deactivated
+			 * 🔴 3. delete()
+			 * Called when workflow is TURNED OFF.
+			 * Removes webhook from your backend.
 			 */
 			async delete(this: IHookFunctions): Promise<boolean> {
 				try {
 					const staticData = this.getWorkflowStaticData('node') as any;
 					const webhookId = staticData?.webhookId;
 
-					if (!webhookId) {
-						// nothing to delete
-						return true;
-					}
+					if (!webhookId) return true; // nothing to delete
 
-					const credentials = (await this.getCredentials('trendswellApi')) as {
-						authToken?: string;
-					};
-					const authToken = credentials?.authToken as string | undefined;
+					const credentials = await this.getCredentials('trendswellApi');
+					const authToken = credentials.authToken as string;
 
-					// perform delete request
+					// DELETE webhook in backend
 					await this.helpers.httpRequest({
 						method: 'DELETE',
 						url: `${backendURL}/n8n/webhooks/${webhookId}`,
 						headers: {
 							'Content-Type': 'application/json',
-							Accept: 'application/json',
 							'auth-token': authToken,
-						},
-						body: {
-							hookUrl: webhookId,
 						},
 						json: true,
 					});
 
-					// remove stored id
+					// Cleanup stored ID
 					delete staticData.webhookId;
-
 					return true;
 				} catch (error) {
-					throw new NodeApiError(this.getNode(), error as unknown as JsonObject);
+					throw new NodeApiError(this.getNode(), error as JsonObject);
 				}
 			},
 		},
 	};
 
 	/**
-	 * webhook runtime function - receives incoming HTTP POSTs from your backend
+	 * 🔵 4. webhook() → Receives data from your backend
+	 * Backend sends either:
+	 *   { data: [...] }
+	 *   OR single object
 	 */
 	async webhook(this: IWebhookFunctions) {
 		const body = this.getBodyData();
-		// your backend posts { data: [...] } so unwrap if present
+
+		// If backend sends { data: [...] }
 		const data = (body as any)?.data ?? body;
 
-		// if data is an array, return each item as separate node item
+		// If array → return each as separate item
 		if (Array.isArray(data)) {
-			const items = data.map((entry) => ({ json: entry as JsonObject }));
 			return {
-				workflowData: [items],
+				workflowData: [data.map((d) => ({ json: d }))],
 			};
 		}
 
-		// single object
+		// Single object
 		return {
-			workflowData: [[{ json: data as JsonObject }]],
+			workflowData: [[{ json: data }]],
 		};
 	}
 }
