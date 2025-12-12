@@ -110,7 +110,7 @@ export class TrendswellTrigger implements INodeType {
 
 					// n8n webhook URL that backend should call
 					const webhookUrl = this.getNodeWebhookUrl('default');
-					const webhookFor = this.getNodeParameter('webhookFor') as string;
+					const webhookFor = 'n8n';
 
 					// Register webhook in your backend
 					const response = await this.helpers.httpRequest({
