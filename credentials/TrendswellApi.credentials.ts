@@ -6,8 +6,7 @@ import {
 	IHttpRequestMethods,
 } from 'n8n-workflow';
 
-export const backendURL = 'http://localhost:5000';
-// export const backendURL = 'https://api.trendswell.ai';
+export const backendURL = 'https://api.trendswell.ai';
 
 export class TrendswellApi implements ICredentialType {
 	name = 'trendswellApi';
