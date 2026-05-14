@@ -2,7 +2,10 @@
 	"name": "n8n-nodes-trendswell",
 	"version": "0.1.17",
 	"description": "n8n nodes for Trendswell (API key auth, one action, one trigger)",
-	"author": "Junaid Khokhar",
+	"author": {
+		"name": "Muhammad Junaid Ali",
+		"email": "muhammadjunaidali67@gmail.com"
+	},
 	"license": "MIT",
 	"main": "dist/index.js",
 	"keywords": [
