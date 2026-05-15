@@ -22,11 +22,11 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/getcurrentai/n8n-nodes-trendswell.git"
+		"url": "https://github.com/khokharjunaid/n8n-nodes-trendswell.git"
 	},
-	"homepage": "https://github.com/getcurrentai/n8n-nodes-trendswell",
+	"homepage": "https://github.com/khokharjunaid/n8n-nodes-trendswell.git",
 	"bugs": {
-		"url": "https://github.com/getcurrentai/n8n-nodes-trendswell/issues"
+		"url": "https://github.com/khokharjunaid/n8n-nodes-trendswell.git"
 	},
 	"n8n": {
 		"n8nNodesApiVersion": 1,
