@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-trendswell",
-	"version": "0.1.23",
+	"version": "0.1.24",
 	"description": "n8n nodes for Trendswell (API key auth, one action, one trigger)",
 	"author": {
 		"name": "Muhammad Junaid Ali",
