@@ -127,9 +127,6 @@ export class Trendswell implements INodeType {
 		const niche1 = this.getNodeParameter('niche1', 0) as string;
 		const niche2 = this.getNodeParameter('niche2', 0) as string;
 
-		const credentials = await this.getCredentials('trendswellApi');
-		const authToken = credentials.authToken as string;
-
 		const body = {
 			searchText,
 			aiStrength,
@@ -138,12 +135,11 @@ export class Trendswell implements INodeType {
 			niches: [niche1, niche2].filter(Boolean),
 		};
 
-		const response = await this.helpers.httpRequest({
+		const response = await this.helpers.httpRequestWithAuthentication.call(this, 'trendswellApi', {
 			method: 'POST',
 			url: `${backendURL}/n8n/automated-search`,
 			headers: {
 				'Content-Type': 'application/json',
-				'auth-token': authToken,
 			},
 			body,
 			json: true,
